@@ -157,6 +157,49 @@ npm start
 
 A aplicação será disponibilizada em `http://localhost:4200`.
 
+## Executando com Docker Compose
+
+O repositório também possui uma implantação composta por três containers:
+
+- `db`: MySQL com volume persistente;
+- `backend`: API Spring Boot;
+- `frontend`: Angular compilado e servido pelo Nginx.
+
+Na máquina de implantação, crie um arquivo `.env` na raiz do projeto:
+
+```env
+DB_PASSWORD=troque-esta-senha
+MYSQL_ROOT_PASSWORD=troque-esta-senha-raiz
+JWT_SECRET=use-um-segredo-longo-e-aleatorio
+FRONTEND_URL=http://localhost:4200
+```
+
+Suba o ambiente com:
+
+```bash
+docker compose up -d --build
+```
+
+O frontend ficará disponível em `http://localhost:4200`. O Nginx encaminha as chamadas da aplicação para o backend, e o backend acessa o banco pelo nome do serviço `db` dentro da rede do Compose.
+
+Para acompanhar os logs:
+
+```bash
+docker compose logs -f backend frontend
+```
+
+Para parar os containers sem remover os dados do banco:
+
+```bash
+docker compose down
+```
+
+O volume `mysql_data` só deve ser removido quando a perda dos dados for intencional:
+
+```bash
+docker compose down -v
+```
+
 ## Estrutura de domínio
 
 Os principais conceitos do sistema são:

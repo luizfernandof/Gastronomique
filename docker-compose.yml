@@ -1,0 +1,49 @@
+services:
+  db:
+    image: mysql:8.4
+    container_name: gastronomique-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-gastronomique}
+      MYSQL_USER: ${MYSQL_USER:-gastronomique}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Defina DB_PASSWORD no ambiente ou em um arquivo .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Defina MYSQL_ROOT_PASSWORD no ambiente ou em um arquivo .env}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  backend:
+    build:
+      context: ./gastronomique-api
+    container_name: gastronomique-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE:-gastronomique}?createDatabaseIfNotExist=true&serverTimezone=UTC
+      DB_USERNAME: ${MYSQL_USER:-gastronomique}
+      DB_PASSWORD: ${DB_PASSWORD:?Defina DB_PASSWORD no ambiente ou em um arquivo .env}
+      JWT_SECRET: ${JWT_SECRET:?Defina JWT_SECRET no ambiente ou em um arquivo .env}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:4200}
+      JPA_DDL_AUTO: ${JPA_DDL_AUTO:-update}
+      JPA_SHOW_SQL: ${JPA_SHOW_SQL:-false}
+    expose:
+      - "8080"
+
+  frontend:
+    build:
+      context: ./gastronomique-front
+    container_name: gastronomique-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-4200}:80"
+
+volumes:
+  mysql_data:

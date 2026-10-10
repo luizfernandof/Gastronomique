@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Insumo } from './insumo.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InsumoService {
 
-  baseUrl: String = "http://localhost:8080/insumos";
+  baseUrl: String = `${environment.apiUrl}/insumos`;
 
   constructor(private http: HttpClient, private _snack: MatSnackBar) { }
 
