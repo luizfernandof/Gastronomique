@@ -1,0 +1,67 @@
+<div id="form-cadastro-item-aula" class="form container text-center">
+  <h1><strong> Novo item da aula </strong></h1>
+  <form>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Insumo: </mat-label>
+        <mat-select (selectionChange)="setValorItem(itemAula.insumo.id!)"
+         [(ngModel)]="itemAula.insumo.id"  [formControl]="insumoAula">
+          <mat-option *ngFor="let insumo of insumos" [value]="insumo.id">
+              {{ insumo.denominacao }} ({{ insumo.unidadeDeMedida }}) ({{ insumo.tipoInsumo }})
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf="insumoAula.invalid">
+          O preenchimento do campo 'Insumo' é obrigatório!
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Quantidade: </mat-label>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="itemAula.quantidade"
+          [formControl]="quantidade">
+        <mat-error *ngIf="quantidade.invalid">
+          O preenchimento do campo 'Quantidade' é obrigatório!
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Observação: </mat-label>
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="itemAula.observacao"
+          [ngModelOptions]="{standalone: true}"
+          >
+      </mat-form-field>
+    </div>
+<!--
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Valor R$: </mat-label>
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="itemAula.valor"
+          [ngModelOptions]="{standalone: true}"
+          >
+      </mat-form-field>
+    </div> -->
+
+    <div class="row" id="botoes-de-acao">
+      <button (click)="inserirItemAula()" class="btn-salvar" mat-raised-button color="primary">
+        Salvar
+      </button>
+      <button (click)="cancelar()" class="btn-cancelar" mat-raised-button color="warn">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,59 @@
+<div class="content">
+
+    <div class="title">
+        <h1>Listagem de insumos do pregão: {{ pregao.nome }}</h1>
+        <span>
+          <em>De {{ formatarData(pregao.dataInicio) }}
+             Até {{ formatarData(pregao.dataFinal) }}
+          </em>
+        </span>
+    </div>
+
+    <button (click)="navegarParaInsercaoDeInsumos()" mat-stroked-button color="primary" id="btn-novo-curso">
+      <i class="bi bi-plus-lg"></i> Novo Insumo
+    </button>
+
+    <button (click)="navegarParaListagemDePregoes()" mat-stroked-button color="accent" id="btn-voltar">
+      <i class="bi bi-arrow-90deg-left"></i> Voltar
+    </button>
+
+    <div class="mat-elevation-z8 content-table">
+        <table class="table" mat-table [dataSource]="insumosPregao">
+            <!-- Position Column -->
+            <ng-container matColumnDef="insumo">
+              <th mat-header-cell *matHeaderCellDef>Insumo</th>
+              <td mat-cell *matCellDef="let row"> {{ row.insumo.denominacao }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="unidadeDeMedida">
+              <th mat-header-cell *matHeaderCellDef>UN</th>
+              <td mat-cell *matCellDef="let row"> {{ row.insumo.unidadeDeMedida }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="preco">
+                <th mat-header-cell *matHeaderCellDef>Preço Unitário</th>
+                <td mat-cell *matCellDef="let row"> {{ row.preco | currency }} </td>
+              </ng-container>
+
+            <ng-container matColumnDef="quantidade">
+                <th mat-header-cell *matHeaderCellDef>Quantidade</th>
+                <td mat-cell *matCellDef="let row"> {{ row.quantidade | number: '.3' }} </td>
+              </ng-container>
+
+            <ng-container matColumnDef="acoes">
+              <th mat-header-cell *matHeaderCellDef> Ações </th>
+              <td mat-cell *matCellDef="let row">
+                <button
+                  (click)="excluirInsumoPregaoDialog(row.id)"
+                  mat-button color="warn">
+                  <i class="bi bi-trash3"></i>excluir
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          </table>
+    </div>
+  </div>

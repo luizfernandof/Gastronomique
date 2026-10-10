@@ -16,11 +16,11 @@ public class LaboratorioService {
 
 	@Autowired
 	private LaboratorioRepository repository;
-	
+
 	public List<Laboratorio> listarTodosLaboratorios() {
 		return repository.findAll();
 	}
-	
+
 	public ResponseEntity<Laboratorio> buscarLaboratorioPorId(Long id) {
 		Laboratorio laboratorio = repository.findById(id).orElse(null);
 		if(laboratorio != null) {
@@ -28,24 +28,24 @@ public class LaboratorioService {
 		}
 		return new ResponseEntity<Laboratorio>(HttpStatus.NOT_FOUND);
 	}
-	
+
 	public ResponseEntity<Laboratorio> inserirLaboratorio(Laboratorio laboratorio) {
 		repository.save(laboratorio);
 		return new ResponseEntity<Laboratorio>(laboratorio, HttpStatus.CREATED);
 	}
-	
+
 	public ResponseEntity<Laboratorio> alterarLaboratorio(Long id, Laboratorio laboratorioAlterado) {
 		Laboratorio laboratorio = repository.findById(id).orElse(null);
 		if(laboratorio != null) {
-			laboratorio.setNome(laboratorioAlterado.getNome());
-			repository.save(laboratorio);
+			laboratorioAlterado.setId(id);
+			laboratorio = repository.save(laboratorioAlterado);
 			return new ResponseEntity<Laboratorio>(laboratorio, HttpStatus.OK);
 		}
-		
+
 		return new ResponseEntity<Laboratorio>(laboratorio, HttpStatus.NOT_FOUND);
-		
+
 	}
-	
+
 	public ResponseEntity<Laboratorio> excluirLaboratorioPorId(Long id) {
 		Optional<Laboratorio> laboratorio = repository.findById(id);
 		if(laboratorio.isPresent()) {
@@ -53,6 +53,6 @@ public class LaboratorioService {
 			return ResponseEntity.noContent().build();
 		} else {
 			return ResponseEntity.notFound().build();
-		}	
+		}
 	}
 }

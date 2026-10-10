@@ -1,0 +1,21 @@
+.env
+.env.*
+!.env.example
+
+# Dados e artefatos locais
+mysql_data/
+**/node_modules/
+**/target/
+**/dist/
+**/coverage/
+**/.angular/
+*.log
+*.bak
+*.sql.gz
+*.dump
+*.pem
+*.key
+*.p12
+*.pfx
+.codex/
+gastronomique-front/src/app/environments/

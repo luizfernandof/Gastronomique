@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { StorageService } from '../_services/storage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { Usuario } from 'src/app/views/aula/usuario.model';
+import { ConfirmDialogComponent } from 'src/app/views/confirm-dialog/confirm-dialog.component';
+import { InfoDialogComponent } from 'src/app/views/info-dialog/info-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +13,6 @@ import { StorageService } from '../_services/storage.service';
 })
 
 export class LoginComponent implements OnInit {
-
   form: any = {
     username: null,
     password: null
@@ -19,7 +22,11 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   roles: string[] = [];
 
-  constructor(private authService: AuthService, private storageService: StorageService) { }
+  constructor(
+    private authService: AuthService,
+    private storageService: StorageService,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     if (this.storageService.isLoggedIn()) {
@@ -40,7 +47,9 @@ export class LoginComponent implements OnInit {
         this.reloadPage();
       },
       error: err => {
-        this.errorMessage = err.error.message;
+        this.errorMessage = err.error?.message || (err.status === 0
+          ? 'Não foi possível conectar ao servidor.'
+          : 'Não foi possível entrar. Verifique seu e-mail e senha.');
         this.isLoginFailed = true;
       }
     });
@@ -48,5 +57,16 @@ export class LoginComponent implements OnInit {
 
   reloadPage(): void {
     window.location.reload();
+  }
+
+  resetarSenhaInfo() {
+    this.dialog.open(InfoDialogComponent, {
+      data: {
+        message: `Solicite diretamente ao usuário administrador para resetar sua senha!`,
+        buttonText: {
+          ok: 'OK'
+        }
+      }
+    });
   }
 }

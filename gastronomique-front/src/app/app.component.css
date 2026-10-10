@@ -1,4 +1,9 @@
-#btn-menu-insumos, #btn-menu-laboratorios, #btn-menu-admin {
+#btn-menu-insumos,
+#btn-menu-laboratorios,
+#btn-menu-admin,
+#btn-menu-cursos-disciplinas,
+#btn-menu-aulas,
+#btn-menu-pregoes {
   margin-right: 4px;
   font-weight: bold;
   color: #fff;

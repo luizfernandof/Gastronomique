@@ -30,7 +30,13 @@ O Gastronomique foi pensado para centralizar essas informações e criar uma bas
 - cadastro, consulta, edição e exclusão de insumos;
 - cadastro, consulta, edição e exclusão de laboratórios;
 - cadastro e manutenção de cursos e disciplinas;
-- estrutura inicial para pregões e itens de pregão;
+- cadastro de pregões, seus insumos, preços e quantidades;
+- gestão administrativa de usuários, ativação e perfis;
+- criação de aulas e inclusão de insumos com cálculo de valores;
+- envio de requisições para revisão, aprovação e devolução;
+- seleção de aulas aprovadas por período;
+- consolidação dos insumos em listas de compras;
+- consulta dos itens de compra e exportação em PDF;
 - validação de dados recebidos pela API;
 - tratamento padronizado de erros;
 - interface Angular com Angular Material;
@@ -38,16 +44,13 @@ O Gastronomique foi pensado para centralizar essas informações e criar uma bas
 
 ### Em evolução
 
-O domínio já possui entidades para aulas e itens de aula, que formam a base para os próximos fluxos do produto:
+O fluxo de requisições e compras foi recuperado da versão acadêmica completa. A evolução prevista para o controle de estoque inclui:
 
-- requisição de insumos por aula;
-- consolidação das necessidades por período;
 - comparação entre demanda e estoque;
-- geração de listas de compras;
 - entrada de mercadorias recebidas;
 - separação de insumos por aula;
 - baixa automática do estoque;
-- histórico e acompanhamento do status das requisições.
+- histórico de movimentações e reservas de estoque.
 
 Essa separação entre o que já está operacional e o que está planejado mantém o projeto tecnicamente honesto e deixa clara sua evolução natural como produto.
 
@@ -98,11 +101,11 @@ gastronomique-api/
 
 O backend utiliza autenticação stateless com JWT e senhas protegidas com BCrypt. As operações administrativas de criação, edição e exclusão são protegidas por perfil de acesso.
 
-Segredos e credenciais não devem ser versionados. A aplicação usa variáveis de ambiente para as configurações sensíveis:
+Segredos e credenciais não devem ser versionados. O `.env` é uma configuração local; somente o `.env.example`, sem segredos reais, deve ser publicado. Dependências, builds, logs e dados do banco também ficam fora do versionamento. A aplicação usa variáveis de ambiente para as configurações sensíveis:
 
 ```bash
 DB_PASSWORD="sua-senha-do-mysql"
-JWT_SECRET="um-segredo-longo-e-aleatorio"
+JWT_SECRET="uma-chave-base64-gerada-com-openssl"
 FRONTEND_URL="http://localhost:4200"
 ```
 
@@ -137,7 +140,7 @@ cd gastronomique-api
 
 export DB_USERNAME="root"
 export DB_PASSWORD="sua-senha"
-export JWT_SECRET="troque-por-um-segredo-forte"
+export JWT_SECRET="$(openssl rand -base64 64 | tr -d '\n')"
 export FRONTEND_URL="http://localhost:4200"
 
 ./mvnw spring-boot:run
@@ -151,7 +154,7 @@ Em outro terminal:
 
 ```bash
 cd gastronomique-front
-npm install
+npm ci
 npm start
 ```
 
@@ -165,13 +168,23 @@ O repositório também possui uma implantação composta por três containers:
 - `backend`: API Spring Boot;
 - `frontend`: Angular compilado e servido pelo Nginx.
 
-Na máquina de implantação, crie um arquivo `.env` na raiz do projeto:
+Na primeira instalação, copie o exemplo e preencha os valores. Se já existe um `.env`, preserve-o e atualize apenas as configurações necessárias:
+
+```bash
+cp .env.example .env
+```
+
+Configuração mínima:
 
 ```env
 DB_PASSWORD=troque-esta-senha
 MYSQL_ROOT_PASSWORD=troque-esta-senha-raiz
-JWT_SECRET=use-um-segredo-longo-e-aleatorio
+JWT_SECRET=cole-a-chave-base64-gerada
 FRONTEND_URL=http://localhost:4200
+BACKEND_PORT=8080
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=troque-esta-senha
+ADMIN_NAME=Administrador
 ```
 
 Suba o ambiente com:
@@ -181,6 +194,14 @@ docker compose up -d --build
 ```
 
 O frontend ficará disponível em `http://localhost:4200`. O Nginx encaminha as chamadas da aplicação para o backend, e o backend acessa o banco pelo nome do serviço `db` dentro da rede do Compose.
+
+Gere a chave JWT com `openssl rand -base64 64 | tr -d '\n'`. No LXC, configure `FRONTEND_URL` com a origem usada no navegador (por exemplo, `http://IP_DO_LXC:4200`).
+
+No build de produção, as requisições usam `/backend`. O Nginx remove esse prefixo e encaminha o restante para a API. Assim, rotas de tela como `/admin/listagem/usuarios` e `/aula/itens/1` continuam abrindo corretamente quando a página é recarregada.
+
+Na primeira inicialização, a API cria automaticamente os papéis `ADMIN` e `PROFESSOR`. Se `ADMIN_EMAIL` e `ADMIN_PASSWORD` estiverem definidos, também cria uma conta administrativa ativa. Novos cadastros de professores permanecem inativos até serem aprovados no menu **Admin → Usuários**.
+
+O bootstrap cria a conta apenas se o e-mail ainda não existir; alterar `ADMIN_PASSWORD` no `.env` não redefine a senha de uma conta já cadastrada.
 
 Para acompanhar os logs:
 
@@ -224,17 +245,23 @@ O projeto foi estruturado com responsabilidades separadas para facilitar manuten
 - tratamento global padroniza respostas de erro;
 - configuração por ambiente evita acoplamento a uma máquina específica.
 
+Há testes unitários de JWT, cadastro público de professores e consolidação de listas de compras. Para executá-los sem depender do MySQL:
+
+```bash
+cd gastronomique-api
+./mvnw -Dtest=JwtUtilsTests,ListaDeCompraServiceTests,UserServiceTests test
+```
+
+O Dockerfile da API executa esses testes antes de empacotar a aplicação. O build do frontend usa a configuração de produção. O registro das correções e das verificações já realizadas está em [Recuperação da versão acadêmica](docs/RECUPERACAO.md); os testes de integração ali listados ainda precisam ser concluídos.
+
 ## Próximos passos
 
-O próximo ciclo natural do projeto é completar o fluxo de estoque e requisições:
+O próximo ciclo natural do projeto é ampliar o controle de estoque e a cobertura de testes:
 
-1. implementar as APIs de aulas e itens de aula;
-2. adicionar saldo e movimentações de estoque;
-3. consolidar demanda por período;
-4. gerar lista de compras com base na disponibilidade;
-5. controlar recebimento, separação e baixa;
-6. ampliar testes automatizados de integração e regras de negócio;
-7. preparar uma implantação conteinerizada para o ambiente de portfólio.
+1. adicionar saldo e movimentações de estoque;
+2. calcular necessidades de compra considerando o saldo disponível;
+3. controlar recebimento, separação e baixa;
+4. ampliar testes automatizados de integração e regras de negócio.
 
 ## Objetivo do portfólio
 

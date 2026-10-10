@@ -3,6 +3,7 @@ package com.ifpr.gastronomique.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -21,7 +22,7 @@ import com.ifpr.gastronomique.security.services.UserDetailsServiceImpl;
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
-	
+
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
 
@@ -60,6 +61,10 @@ public class WebSecurityConfig {
 				.and().authorizeRequests()
 				.antMatchers("/api/auth/**").permitAll()
 				.antMatchers("/api/test/**").permitAll()
+				.antMatchers("/admin/**", "/lista/compra/**").hasRole("ADMIN")
+				.antMatchers(HttpMethod.POST, "/insumos/**", "/laboratorios/**", "/cursos/**", "/disciplinas/**", "/pregoes/**", "/pregao/insumos/**").hasRole("ADMIN")
+				.antMatchers(HttpMethod.PUT, "/insumos/**", "/laboratorios/**", "/cursos/**", "/disciplinas/**", "/pregoes/**", "/pregao/insumos/**").hasRole("ADMIN")
+				.antMatchers(HttpMethod.DELETE, "/insumos/**", "/laboratorios/**", "/cursos/**", "/disciplinas/**", "/pregoes/**", "/pregao/insumos/**").hasRole("ADMIN")
 				.anyRequest().authenticated();
 
 		http.authenticationProvider(authenticationProvider());

@@ -1,0 +1,56 @@
+<div id="form-cadastro-pregao" class="form container text-center">
+  <h1><strong> Novo pregão </strong></h1>
+  <form>
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Nome: </mat-label>
+        <input
+          matInput
+          [(ngModel)]="pregao.nome"
+          [formControl]="nome"
+          type="text"
+          />
+          <mat-error *ngIf="nome.invalid">
+            O preenchimento do campo 'Nome' é obrigatório!
+          </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Data de início: </mat-label>
+        <input
+          matInput
+          type="date"
+          [(ngModel)]="pregao.dataInicio"
+          [formControl]="dataInicio">
+        <mat-error *ngIf="dataInicio.invalid">
+          O preenchimento do campo 'Data de início' é obrigatório!
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Data final: </mat-label>
+        <input
+          matInput
+          type="date"
+          [(ngModel)]="pregao.dataFinal"
+          [formControl]="dataFinal">
+        <mat-error *ngIf="dataFinal.invalid">
+          O preenchimento do campo 'Data final' é obrigatório!
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row" id="botoes-de-acao">
+      <button (click)="inserirPregao()" class="btn-salvar" mat-raised-button color="primary">
+        Salvar
+      </button>
+      <button (click)="cancelar()" class="btn-cancelar" mat-raised-button color="warn">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

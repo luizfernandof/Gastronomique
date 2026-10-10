@@ -4,12 +4,20 @@
       <h1>Listagem de insumos</h1>
   </div>
 
-  <button (click)="novoInsumo()" mat-stroked-button color="primary" id="btn-novo-insumo">
-    <i class="bi bi-plus-lg"></i> Novo Insumo
-  </button>
+  <div class="search">
+    <button (click)="novoInsumo()" mat-stroked-button color="primary" id="btn-novo-insumo">
+      <i class="bi bi-plus-lg"></i> Novo Insumo
+    </button>
+    <mat-form-field>
+      <input matInput placeholder="Informe o nome do insumo para pesquisar..." (input)="aplicarFiltro($event)">
+    </mat-form-field>
+    <mat-icon matPrefix>
+      <i class="bi bi-search"></i>
+    </mat-icon>
+  </div>
 
   <div class="mat-elevation-z8 content-table">
-      <table class="table" mat-table [dataSource]="insumos">
+      <table class="table" mat-table [dataSource]="dataSource">
           <!-- Position Column -->
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>Id</th>
@@ -39,30 +47,30 @@
           <ng-container matColumnDef="acoes">
             <th mat-header-cell *matHeaderCellDef> Ações </th>
             <td mat-cell *matCellDef="let row">
-              <button (click)="editarInsumo(row.id)" mat-stroked-button color="primary">
-                <i class="bi bi-pencil-square"></i>editar
+              <button id="btn-acoes" mat-button color="accent" [matMenuTriggerFor]="menuAcoes">
+                <i class="bi bi-gear"></i> Ações
               </button>
-              <button (click)="excluirInsumo(row.id)" mat-stroked-button color="warn">
-                <i class="bi bi-trash3"></i>excluir
-              </button>
+              <mat-menu #menuAcoes="matMenu">
+                <button id="btn-acao-editar" (click)="editarInsumo(row.id)" mat-button color="primary">
+                  <i class="bi bi-pencil-square"></i>editar
+                </button>
+                <button id="btn-acao-excluir" (click)="excluirInsumo(row.id)" mat-button color="warn">
+                  <i class="bi bi-trash3"></i>excluir
+                </button>
+              </mat-menu>
             </td>
           </ng-container>
 
-          <!-- <ng-container matColumnDef="acoes">
-            <th class="mat-reader" mat-header-cell *matHeaderCellDef> AÇÕES </th>
-            <td mat-cell *matCellDef="let row">
-              <a class="edit" routerLink="update/{{ row.id }}">
-                <i class="material-icons">edit</i>
-              </a>
-              <a class="delete" routerLink="delete/{{ row.id }}">
-                <i class="material-icons">delete</i>
-              </a>
-            </td>
-          </ng-container> -->
-
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
         </table>
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 15, 20, 50]"
+          [length]="totalItems"
+          [pageSize]="pageSize"
+          [pageIndex]="pageIndex"
+          (page)="onPageChange($event)"
+          >
+        </mat-paginator>
   </div>
 </div>

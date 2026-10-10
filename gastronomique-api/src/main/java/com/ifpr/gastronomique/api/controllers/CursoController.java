@@ -6,7 +6,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,34 +23,31 @@ import com.ifpr.gastronomique.api.services.CursoService;
 @RestController
 @RequestMapping("/cursos")
 public class CursoController {
-	
+
 	@Autowired
 	private CursoService service;
-	
+
 	@GetMapping
 	public List<Curso> buscarTodos() {
 		return service.listarTodosCursos();
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Curso> buscarPorId(@PathVariable Long id) {
 		return service.buscarCursoPorId(id);
 	}
-	
+
 	@PostMapping
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Curso> inserirCurso(@Valid @RequestBody Curso curso) {
 		return service.inserirCurso(curso);
 	}
-	
+
 	@PutMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Curso> alterarCurso(@PathVariable Long id, @Valid @RequestBody Curso curso) {
 		return service.alterarCurso(id, curso);
 	}
-	
+
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Curso> excluirCursoPorId(@PathVariable Long id) {
 		return service.excluirCursoPorId(id);
 	}

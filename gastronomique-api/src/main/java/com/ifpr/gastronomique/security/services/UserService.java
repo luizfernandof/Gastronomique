@@ -30,33 +30,33 @@ import com.ifpr.gastronomique.security.repositories.UserRepository;
 
 @Service
 public class UserService {
-	
+
 	@Autowired
 	AuthenticationManager authenticationManager;
-	
+
 	@Autowired
 	JwtUtils jwtUtils;
-	
+
 	@Autowired
 	private UserRepository repository;
-	
+
 	@Autowired
 	private RoleRepository roleRepository;
 
 	@Autowired
 	private PasswordEncoder encoder;
-	
+
 	@Transactional
 	public ResponseEntity<?> loginUsuario(LoginRequest loginRequest) {
-		
+
 		Optional<User> user = repository.findByUsername(loginRequest.getUsername());
-		
+
 		if(user.isPresent()) {
 			if(!user.get().isActive()) {
 				return ResponseEntity.badRequest().body(new MessageResponse("O seu usuário esta INATIVO, contate o ADMINISTRADOR!"));
 			}
 		}
-		
+
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -70,10 +70,13 @@ public class UserService {
 		return ResponseEntity.ok(
 				new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
 	}
-	
+
 	@SuppressWarnings("null")
 	@Transactional
 	public ResponseEntity<?> CadastrarNovoUsuario(SignupRequest signUpRequest) {
+		if (repository.existsByUsername(signUpRequest.getEmail())) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+		}
 		if (repository.existsByEmail(signUpRequest.getEmail())) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
 		}
@@ -85,18 +88,18 @@ public class UserService {
 				signUpRequest.getUsername(),
 				signUpRequest.getEmail(),
 				encoder.encode(signUpRequest.getPassword()));
-		
+
 		// Setando o username com o email
 		user.setUsername(user.getEmail());
-		
+
 		// Usuário começa desativado até o ACEITE do ADMINISTRADOR: 0 = INATIVO, 1 = ATIVO
 		user.setActive(false);
 
 		Set<Role> roles = new HashSet<>();
-		Role userRole = roleRepository.findByName(ERole.ROLE_PROFESSOR)
-				.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-		roles.add(userRole);
-		
+		Role professorRole = roleRepository.findByName(ERole.ROLE_PROFESSOR)
+				.orElseThrow(() -> new IllegalStateException("Perfil PROFESSOR não inicializado."));
+		roles.add(professorRole);
+
 		user.setRoles(roles);
 		repository.save(user);
 

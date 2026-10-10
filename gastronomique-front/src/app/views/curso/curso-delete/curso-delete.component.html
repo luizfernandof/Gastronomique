@@ -1,0 +1,23 @@
+<div id="form-exclusao-curso" class="form container text-center">
+  <h1><strong>Confirma a exclusão deste curso?</strong></h1>
+  <form>
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Nome</mat-label>
+        <input
+          matInput [value]="curso.nome"
+          [disabled]="true"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="row" id="botoes-de-acao">
+      <button (click)="excluirCurso()" class="btn-salvar" mat-raised-button color="primary">
+        Excluir
+      </button>
+      <button (click)="cancelar()" class="btn-cancelar" mat-raised-button color="warn">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,43 @@
+.title h1 {
+  max-width: 100%;
+  font-size: 24px;
+  font-family: 'Poppins';
+  font-weight: bolder;
+  text-align: center;
+}
+
+.content {
+  max-width: 100%;
+  margin-top: 20px;
+}
+
+.table th, td{
+  text-align: center;
+}
+
+td a {
+  margin-left: 5px;
+  display: inline;
+}
+
+.table table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+table {
+  border-radius: 25px;
+}
+
+button {
+  margin-top: 3px;
+  margin-left: 10px;
+}
+
+#btn-acao-itens,
+#btn-acao-aprovar {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}

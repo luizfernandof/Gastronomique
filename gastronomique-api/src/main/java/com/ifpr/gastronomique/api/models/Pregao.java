@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,14 +25,15 @@ public class Pregao {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	private LocalDate dataInicio;
-	
-	private LocalDate dataFinal;
-	
+
 	@NotBlank
 	private String nome;
-	
+
+	private LocalDate dataInicio;
+
+	private LocalDate dataFinal;
+
 	@OneToMany(mappedBy = "pregao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<PregaoInsumo> pregaoInsumo; 
+	@JsonManagedReference
+	private List<PregaoInsumo> pregaoInsumo;
 }

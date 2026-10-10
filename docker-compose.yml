@@ -30,8 +30,13 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:?Defina DB_PASSWORD no ambiente ou em um arquivo .env}
       JWT_SECRET: ${JWT_SECRET:?Defina JWT_SECRET no ambiente ou em um arquivo .env}
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:4200}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+      ADMIN_NAME: ${ADMIN_NAME:-Administrador}
       JPA_DDL_AUTO: ${JPA_DDL_AUTO:-update}
       JPA_SHOW_SQL: ${JPA_SHOW_SQL:-false}
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
     expose:
       - "8080"
 

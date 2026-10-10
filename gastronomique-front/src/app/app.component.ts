@@ -72,4 +72,39 @@ export class AppComponent {
     this.router.navigate(['laboratorio/listagem']);
   }
 
+  navegarCadastroCurso():void {
+    this.router.navigate(['curso/inserir']);
+  }
+
+  navegarListagemCursos():void {
+    this.router.navigate(['curso/listagem']);
+  }
+
+  navegarCadastroAula():void {
+    this.router.navigate(['aula/inserir']);
+  }
+
+  navegarListagemAulas():void {
+    this.router.navigate(['aula/listagem']);
+  }
+
+  navegarCadastroPregao():void {
+    this.router.navigate(['pregao/inserir']);
+  }
+
+  navegarListagemPregoes():void {
+    this.router.navigate(['pregao/listagem']);
+  }
+
+  navegarListagemUsuarios():void {
+    this.router.navigate(['admin/listagem/usuarios']);
+  }
+
+  navegarListagemRequisicoes():void {
+    this.router.navigate(['admin/listagem/requisicoes']);
+  }
+
+  navegarParaListagemDeListaDeCompras(): void {
+    this.router.navigate(['admin/listagem/lista/compras']);
+  }
 }

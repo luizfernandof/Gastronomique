@@ -5,8 +5,9 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,36 +25,48 @@ import com.ifpr.gastronomique.api.services.InsumoService;
 @RestController
 @RequestMapping("/insumos")
 public class InsumoController {
-	
+
 	@Autowired
 	private InsumoService service;
-	
+
 	@GetMapping
 	public List<Insumo> buscarTodos() {
 		return service.listarTodosInsumos();
 	}
-	
+
+	@GetMapping("pageable")
+	public Page<Insumo> buscarTodosInsumosPageable(Pageable pageable) {
+		return service.listarTodosInsumosPageable(pageable);
+	}
+
+	@GetMapping("pregao/{idPregao}")
+	public List<Insumo> buscarInsumosPorPregao(@PathVariable Long idPregao) {
+		return service.buscarInsumosPorPregao(idPregao);
+	}
+
+	@GetMapping("tipo/{tipo}")
+	public List<Insumo> buscarPorTipo(@PathVariable String tipo) {
+		return service.buscarInsumosPorTipo(tipo);
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Insumo> buscarPorId(@PathVariable Long id) {
 		return service.buscarInsumoPorId(id);
 	}
-	
+
 	@PostMapping
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Insumo> inserirInsumo(@Valid @RequestBody Insumo insumo) {
 		return service.inserirInsumo(insumo);
 	}
-	
+
 	@PutMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Insumo> alterarInsumo(@PathVariable Long id, @Valid @RequestBody Insumo insumo) {
 		return service.alterarInsumo(id, insumo);
 	}
-	
+
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Insumo> excluirInsumoPorId(@PathVariable Long id) {
 		return service.excluirInsumoPorId(id);
 	}
-	
+
 }

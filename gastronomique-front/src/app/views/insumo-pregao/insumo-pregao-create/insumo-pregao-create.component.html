@@ -1,0 +1,57 @@
+<div id="form-cadastro-insumo-pregao" class="form container text-center">
+    <h1><strong> Novo insumo no pregão </strong></h1>
+    <form>
+  
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-label>Insumo: </mat-label>
+          <mat-select [(ngModel)]="insumoPregao.insumo.id"  [formControl]="insumo">
+            <mat-option *ngFor="let insumo of insumos" [value]="insumo.id">
+                {{ insumo.denominacao }} ({{ insumo.unidadeDeMedida }})
+              </mat-option>
+          </mat-select>
+          <mat-error *ngIf="insumo.invalid">
+            O preenchimento do campo 'Insumo' é obrigatório!
+          </mat-error>
+        </mat-form-field>
+      </div>
+  
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-label>Preço(R$) </mat-label>
+          <input
+            matInput
+            type="number"
+            mask="0.00"
+            [(ngModel)]="insumoPregao.preco"
+            [formControl]="preco">
+          <mat-error *ngIf="preco.invalid">
+            O preenchimento do campo 'Preço(R$)' é obrigatório!
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-label>Quantidade: </mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="insumoPregao.quantidade"
+            [formControl]="quantidade">
+          <mat-error *ngIf="quantidade.invalid">
+            O preenchimento do campo 'Quantidade' é obrigatório!
+          </mat-error>
+        </mat-form-field>
+      </div>
+  
+      <div class="row" id="botoes-de-acao">
+        <button (click)="inserirInsumoPregao()" class="btn-salvar" mat-raised-button color="primary">
+          Salvar
+        </button>
+        <button (click)="cancelar()" class="btn-cancelar" mat-raised-button color="warn">
+          Cancelar
+        </button>
+      </div>
+    </form>
+</div>

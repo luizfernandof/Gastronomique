@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,36 +21,33 @@ import com.ifpr.gastronomique.api.services.PregaoService;
 @RestController
 @RequestMapping("/pregoes")
 public class PregaoController {
-	
+
 	@Autowired
 	private PregaoService service;
-	
+
 	@GetMapping
 	public List<Pregao> buscarTodos() {
 		return service.listarTodosPregoes();
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Pregao> buscarPorId(@PathVariable Long id) {
 		return service.buscarPregaoPorId(id);
 	}
-	
+
 	@PostMapping
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Pregao> inserirPregao(@RequestBody Pregao pregao) {
 		return service.inserirPregao(pregao);
 	}
-	
+
 	@PutMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Pregao> alterarPregao(@PathVariable Long id,@RequestBody Pregao pregao) {
 		return service.alterarPregao(id, pregao);
 	}
-	
+
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Pregao> excluirPregaoPorId(@PathVariable Long id) {
 		return service.excluirPregaoPorId(id);
 	}
-	
+
 }

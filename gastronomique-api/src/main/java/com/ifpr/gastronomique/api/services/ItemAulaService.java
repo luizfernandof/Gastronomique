@@ -1,0 +1,127 @@
+package com.ifpr.gastronomique.api.services;
+
+import java.util.List;
+import java.util.Optional;
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.ifpr.gastronomique.api.dto.ItemAulaDto;
+import com.ifpr.gastronomique.api.models.Aula;
+import com.ifpr.gastronomique.api.models.Insumo;
+import com.ifpr.gastronomique.api.models.ItemAula;
+import com.ifpr.gastronomique.api.repositories.AulaRepository;
+import com.ifpr.gastronomique.api.repositories.InsumoRepository;
+import com.ifpr.gastronomique.api.repositories.ItemAulaRepository;
+
+@Service
+@Transactional
+public class ItemAulaService {
+	@Autowired
+	private ItemAulaRepository repository;
+	
+	@Autowired
+	private AulaRepository aulaRepository;
+	
+	@Autowired
+	private InsumoRepository insumoRepository;
+	
+	@Autowired
+	private AulaService aulaService;
+	
+	public List<ItemAula> listarItensDaAula(Long idAula) {
+		Aula aula = new Aula();
+		aula.setId(idAula);
+		return repository.findByAula(aula);
+	}
+	
+	public ResponseEntity<ItemAulaDto> buscarItemAulaPorId(Long itemAulaId) {
+		ItemAula itemAula = repository.findById(itemAulaId).orElse(null);
+		if(itemAula != null) {
+			ItemAulaDto itemAulaDto = new ItemAulaDto();
+			itemAulaDto.setId(itemAulaId);
+			itemAulaDto.setIdAula(itemAula.getAula().getId());
+			itemAulaDto.setIdInsumo(itemAula.getInsumo().getId());
+			itemAulaDto.setObservacao(itemAula.getObservacao());
+			itemAulaDto.setQuantidade(itemAula.getQuantidade());
+			itemAulaDto.setValorUnitario(itemAula.getValorUnitario());
+			
+			return new ResponseEntity<ItemAulaDto>(itemAulaDto, HttpStatus.OK);
+		}
+		return new ResponseEntity<ItemAulaDto>(HttpStatus.NOT_FOUND);
+	}
+	
+	public ResponseEntity<ItemAula> inserirItemAula(ItemAula itemAula) {
+		Double quantidade = itemAula.getQuantidade();
+		Double valorUnitario = itemAula.getValorUnitario();
+		Double valorTotal = valorUnitario * quantidade;
+		itemAula.setValorTotal(valorTotal);
+		
+		Optional<Aula> aula = aulaRepository.findById(itemAula.getAula().getId());
+		if(aula.isPresent()) {
+			Double valorAula = aula.get().getValor() + itemAula.getValorTotal();
+			aula.get().setValor(valorAula);
+			aulaService.alterarAula(itemAula.getAula().getId(), aula.get());
+		}
+		
+		repository.save(itemAula);
+		return new ResponseEntity<ItemAula>(itemAula, HttpStatus.CREATED);
+	}
+	
+	public ResponseEntity<ItemAula> alterarItemAula(Long id, ItemAulaDto itemAulaDto) {
+		ItemAula itemAula = repository.findById(id).orElse(null);
+		
+		if(itemAula != null) {
+			Insumo insumo = insumoRepository.findById(itemAulaDto.getIdInsumo()).orElse(null);
+			itemAula.setInsumo(insumo);
+			itemAula.setQuantidade(itemAulaDto.getQuantidade());
+			itemAula.setValorUnitario(itemAulaDto.getValorUnitario());
+			itemAula.setObservacao(itemAulaDto.getObservacao());
+			
+			Optional<Aula> aula = aulaRepository.findById(itemAula.getAula().getId());
+			if(aula.isPresent()) {
+				// RETIRADO O VALOR TOTAL DO ITEM DA AULA NO MOMENTO DA EDICAO
+				Double valorAula = aula.get().getValor() - itemAula.getValorTotal();
+				
+				// ATRIBUINDO NOVO VALOR TOTAL AO ITEM APOS AS EDICOES
+				Double valorTotalItem = itemAula.getValorUnitario() * itemAula.getQuantidade();
+				itemAula.setValorTotal(valorTotalItem);
+				
+				// ATUALIZANDO VALORES DA AULA APOS EDICAO DO ITEM
+				aula.get().setValor(valorAula + valorTotalItem);
+				aulaService.alterarAula(aula.get().getId(), aula.get());
+			}
+			
+			repository.save(itemAula);
+			return new ResponseEntity<ItemAula>(itemAula, HttpStatus.OK);
+		}
+		return new ResponseEntity<ItemAula>(itemAula, HttpStatus.NOT_FOUND);	
+	}
+	
+	public ResponseEntity<ItemAula> excluirItemAulaPorId(Long id) {
+		Optional<ItemAula> itemAula = repository.findById(id);
+		if(itemAula.isPresent()) {
+			Optional<Aula> aula = aulaRepository.findById(itemAula.get().getAula().getId());
+			if(aula.isPresent()) {
+				Double valorAula = aula.get().getValor() - itemAula.get().getValorTotal();
+				aula.get().setValor(valorAula);
+				aulaService.alterarAula(itemAula.get().getAula().getId(), aula.get());
+			}
+			repository.deleteById(id);
+			return ResponseEntity.noContent().build();
+		} else {
+			return ResponseEntity.notFound().build();
+		}	
+	}
+	
+//	public List<Insumo> listarItensPregao(Long idAula) {
+//		Optional<Aula> aula =  aulaRepository.findById(idAula);
+//		if(aula.isPresent()) {
+//			//Optional<Pregao> pregao = pregaoRepository.findById(aula.get().getPregao().getId());
+//			Pregao pregao = new Pregao();
+//		}
+//	}
+}

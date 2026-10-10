@@ -1,0 +1,24 @@
+#form-cadastro-insumo-pregao {
+    padding: 30px;
+    margin-top: 40px;
+    max-width: 50%;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  #botoes-de-acao {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .btn-salvar,
+  .btn-cancelar {
+    margin: 2px;
+    width: 40%;
+  }
+  

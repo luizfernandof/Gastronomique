@@ -22,3 +22,21 @@
 #btn-novo-insumo {
   margin-bottom: 5px;
 }
+
+.search {
+  width: 100%;
+}
+
+.search mat-form-field {
+  margin-left: 15px;
+  width: 83.5%;
+  text-align: left;
+}
+
+#btn-acao-editar,
+#btn-acao-excluir {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}

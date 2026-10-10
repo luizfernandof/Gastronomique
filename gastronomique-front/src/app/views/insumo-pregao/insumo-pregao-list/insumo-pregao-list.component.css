@@ -1,0 +1,33 @@
+.title h1 {
+    max-width: 100%;
+    font-size: 24px;
+    font-family: 'Poppins';
+    font-weight: bolder;
+    text-align: center;
+  }
+
+  .title {
+    text-align: center;
+  }
+
+  span {
+    font-weight: bold;
+  }
+
+  .content {
+    max-width: 100%;
+    margin-top: 40px;
+  }
+
+  .table th, td{
+    text-align: center;
+  }
+
+  .table button {
+    margin-right: 4px;
+  }
+
+  #btn-novo-curso, #btn-voltar {
+    margin-bottom: 5px;
+    margin-left: 5px;
+  }

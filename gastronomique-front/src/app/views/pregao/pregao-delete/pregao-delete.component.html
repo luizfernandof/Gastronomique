@@ -1,0 +1,43 @@
+<div id="form-exclusao-pregao" class="form container text-center">
+  <h1><strong>Confirma a exclusão deste pregão?</strong></h1>
+  <form>
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Nome</mat-label>
+        <input
+          matInput [value]="pregao.nome"
+          [disabled]="true"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Data de início</mat-label>
+        <input
+          matInput [value]="pregao.dataInicio"
+          [disabled]="true"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Data final</mat-label>
+        <input
+          matInput [value]="pregao.dataFinal"
+          [disabled]="true"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="row" id="botoes-de-acao">
+      <button (click)="excluirPregao()" class="btn-salvar" mat-raised-button color="primary">
+        Excluir
+      </button>
+      <button (click)="cancelar()" class="btn-cancelar" mat-raised-button color="warn">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

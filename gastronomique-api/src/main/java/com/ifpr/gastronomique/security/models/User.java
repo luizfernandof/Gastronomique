@@ -19,6 +19,7 @@ import javax.validation.constraints.Size;
 
 import lombok.Getter;
 import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Getter
 @Setter
@@ -30,11 +31,11 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotBlank
 	@Size(min = 2, max = 100)
 	private String fullName;
-	
+
 	private boolean isActive;
 
 	@NotBlank
@@ -48,12 +49,13 @@ public class User {
 
 	@NotBlank
 	@Size(max = 120)
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
-			name = "user_roles", 
-			joinColumns = @JoinColumn(name = "user_id"), 
+			name = "user_roles",
+			joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 

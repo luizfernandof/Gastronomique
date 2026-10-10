@@ -1,0 +1,45 @@
+.title h1 {
+  max-width: 100%;
+  font-size: 24px;
+  font-family: 'Poppins';
+  font-weight: bolder;
+  text-align: center;
+}
+
+.content {
+  max-width: 100%;
+  margin-top: 20px;
+}
+
+.table th, td{
+  text-align: center;
+}
+
+.table td {
+  padding: 5px;
+}
+
+#btn-nova-aula {
+  margin-bottom: 5px;
+}
+
+#btn-acao-editar,
+#btn-acao-itens,
+#btn-acao-editar,
+#btn-acao-enviar {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+#seletorPeriodo {
+  text-align: right;
+  width: 100%;
+}
+
+#seletorPeriodo input {
+  height: 35px;
+  margin: 5px;
+  border-radius: 5px;
+}

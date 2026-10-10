@@ -13,14 +13,14 @@ import com.ifpr.gastronomique.api.repositories.CursoRepository;
 
 @Service
 public class CursoService {
-	
+
 	@Autowired
 	private CursoRepository repository;
-	
+
 	public List<Curso> listarTodosCursos() {
 		return repository.findAll();
 	}
-	
+
 	public ResponseEntity<Curso> buscarCursoPorId(Long id) {
 		Curso curso = repository.findById(id).orElse(null);
 		if(curso != null) {
@@ -28,23 +28,23 @@ public class CursoService {
 		}
 		return new ResponseEntity<Curso>(HttpStatus.NOT_FOUND);
 	}
-	
+
 	public ResponseEntity<Curso> inserirCurso(Curso curso) {
 		repository.save(curso);
 		return new ResponseEntity<Curso>(curso, HttpStatus.CREATED);
 	}
-	
+
 	public ResponseEntity<Curso> alterarCurso(Long id, Curso cursoAlterado) {
 		Curso curso = repository.findById(id).orElse(null);
 		if(curso != null) {
-			curso.setNome(cursoAlterado.getNome());
-			repository.save(curso);
+			cursoAlterado.setId(id);
+			curso = repository.save(cursoAlterado);
 			return new ResponseEntity<Curso>(curso, HttpStatus.OK);
 		}
-		
+
 		return new ResponseEntity<Curso>(curso, HttpStatus.NOT_FOUND);
 	}
-	
+
 	public ResponseEntity<Curso> excluirCursoPorId(Long id) {
 		Optional<Curso> curso = repository.findById(id);
 		if(curso.isPresent()) {
@@ -52,6 +52,6 @@ public class CursoService {
 			return ResponseEntity.noContent().build();
 		} else {
 			return ResponseEntity.notFound().build();
-		}	
+		}
 	}
 }

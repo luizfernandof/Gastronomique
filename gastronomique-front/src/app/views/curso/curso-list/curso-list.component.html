@@ -1,0 +1,50 @@
+<div class="content">
+
+  <div class="title">
+      <h1>Listagem de cursos</h1>
+  </div>
+
+  <button (click)="novoCurso()" mat-stroked-button color="primary" id="btn-novo-curso">
+    <i class="bi bi-plus-lg"></i> Novo Curso
+  </button>
+
+  <div class="mat-elevation-z8 content-table">
+      <table class="table" mat-table [dataSource]="cursos">
+          <!-- Position Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Id</th>
+            <td mat-cell *matCellDef="let row"> {{ row.id }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef>Nome</th>
+            <td mat-cell *matCellDef="let row"> {{ row.nome }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef> Ações </th>
+            <td mat-cell *matCellDef="let row">
+
+              <button id="btn-acoes" mat-button color="accent" [matMenuTriggerFor]="menuAcoes">
+                <i class="bi bi-gear"></i> Ações
+              </button>
+              <mat-menu #menuAcoes="matMenu">
+                <button id="btn-acao-editar" (click)="editarCurso(row.id)" mat-button color="primary">
+                  <i class="bi bi-pencil-square"></i>editar
+                </button>
+                <button id="btn-acao-disciplinas" (click)="listarDisciplinasPorCursoId(row.id)" mat-button color="accent">
+                  <i class="bi bi-journal-check"></i>disciplinas
+                </button>
+                <button id="btn-acao-excluir" (click)="excluirCurso(row.id)" mat-button color="warn">
+                  <i class="bi bi-trash3"></i>excluir
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+  </div>
+</div>

@@ -24,12 +24,18 @@
           <ng-container matColumnDef="acoes">
             <th mat-header-cell *matHeaderCellDef> Ações </th>
             <td mat-cell *matCellDef="let row">
-              <button (click)="editarLaboratorio(row.id)" mat-stroked-button color="primary">
-                <i class="bi bi-pencil-square"></i>editar
+
+              <button id="btn-acoes" mat-button color="accent" [matMenuTriggerFor]="menuAcoes">
+                <i class="bi bi-gear"></i> Ações
               </button>
-              <button (click)="excluirLaboratorio(row.id)" mat-stroked-button color="warn">
-                <i class="bi bi-trash3"></i>excluir
-              </button>
+              <mat-menu #menuAcoes="matMenu">
+                <button id="btn-acao-editar" (click)="editarLaboratorio(row.id)" mat-button color="primary">
+                  <i class="bi bi-pencil-square"></i>editar
+                </button>
+                <button id="btn-acao-excluir" (click)="excluirLaboratorio(row.id)" mat-button color="warn">
+                  <i class="bi bi-trash3"></i>excluir
+                </button>
+              </mat-menu>
             </td>
           </ng-container>
 

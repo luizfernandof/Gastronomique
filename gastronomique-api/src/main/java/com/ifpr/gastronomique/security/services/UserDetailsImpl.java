@@ -24,6 +24,8 @@ public class UserDetailsImpl implements UserDetails {
   @JsonIgnore
   private String password;
 
+  private boolean enabled = true;
+
   private Collection<? extends GrantedAuthority> authorities;
 
   public UserDetailsImpl(Long id, String username, String email, String password,
@@ -40,12 +42,14 @@ public class UserDetailsImpl implements UserDetails {
         .map(role -> new SimpleGrantedAuthority(role.getName().name()))
         .collect(Collectors.toList());
 
-    return new UserDetailsImpl(
-        user.getId(), 
-        user.getUsername(), 
+    UserDetailsImpl details = new UserDetailsImpl(
+        user.getId(),
+        user.getUsername(),
         user.getEmail(),
-        user.getPassword(), 
+        user.getPassword(),
         authorities);
+    details.enabled = user.isActive();
+    return details;
   }
 
   @Override
@@ -88,7 +92,7 @@ public class UserDetailsImpl implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return true;
+    return enabled;
   }
 
   @Override

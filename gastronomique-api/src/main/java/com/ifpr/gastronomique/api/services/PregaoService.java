@@ -16,11 +16,11 @@ public class PregaoService {
 
 	@Autowired
 	private PregaoRepository repository;
-	
+
 	public List<Pregao> listarTodosPregoes() {
 		return repository.findAll();
 	}
-	
+
 	public ResponseEntity<Pregao> buscarPregaoPorId(Long id) {
 		Pregao pregao = repository.findById(id).orElse(null);
 		if(pregao != null) {
@@ -28,27 +28,24 @@ public class PregaoService {
 		}
 		return new ResponseEntity<Pregao>(HttpStatus.NOT_FOUND);
 	}
-	
+
 	public ResponseEntity<Pregao> inserirPregao(Pregao pregao) {
 		repository.save(pregao);
 		return new ResponseEntity<Pregao>(pregao, HttpStatus.CREATED);
 	}
-	
+
 	public ResponseEntity<Pregao> alterarPregao(Long id, Pregao pregaoAlterado) {
 		Pregao pregao = repository.findById(id).orElse(null);
 		if(pregao != null) {
-			pregao.setDataInicio(pregaoAlterado.getDataInicio());
-			pregao.setDataFinal(pregaoAlterado.getDataFinal());
-			pregao.setNome(pregaoAlterado.getNome());
-			pregao.setPregaoInsumo(pregaoAlterado.getPregaoInsumo());
-			repository.save(pregao);
+			pregaoAlterado.setId(id);
+			pregao = repository.save(pregaoAlterado);
 			return new ResponseEntity<Pregao>(pregao, HttpStatus.OK);
 		}
-		
+
 		return new ResponseEntity<Pregao>(pregao, HttpStatus.NOT_FOUND);
-		
+
 	}
-	
+
 	public ResponseEntity<Pregao> excluirPregaoPorId(Long id) {
 		Optional<Pregao> pregao = repository.findById(id);
 		if(pregao.isPresent()) {
@@ -56,7 +53,7 @@ public class PregaoService {
 			return ResponseEntity.noContent().build();
 		} else {
 			return ResponseEntity.notFound().build();
-		}	
+		}
 	}
-	
+
 }

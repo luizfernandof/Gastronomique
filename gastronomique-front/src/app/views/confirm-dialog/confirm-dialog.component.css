@@ -1,0 +1,16 @@
+:host {
+  text-align: left;
+  display: block;
+  width: 300px;
+}
+
+p {
+  font-size: 20px;
+}
+
+button {
+  text-align: left;
+  padding: 4px;
+  margin: 2px;
+  border-radius: 5px;
+}

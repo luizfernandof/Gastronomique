@@ -6,14 +6,27 @@
       <li class="nav-item" *ngIf="showAdminBoard">
         <button id="btn-menu-admin" mat-button [matMenuTriggerFor]="menu">Admin</button>
           <mat-menu #menu="matMenu">
-          <button mat-menu-item>Usuários</button>
-          <button mat-menu-item>Requisições</button>
+          <button mat-menu-item (click)="navegarListagemUsuarios()">Usuários</button>
+          <button mat-menu-item (click)="navegarListagemRequisicoes()">Requisições</button>
+          <button mat-menu-item (click)="navegarParaListagemDeListaDeCompras()">Lista de compras</button>
+        </mat-menu>
+
+        <button id="btn-menu-pregoes" mat-button [matMenuTriggerFor]="menuPregoes">Pregões</button>
+          <mat-menu #menuPregoes="matMenu">
+            <button mat-menu-item (click)="navegarListagemPregoes()">Listar</button>
+            <button mat-menu-item (click)="navegarCadastroPregao()">Cadastrar</button>
         </mat-menu>
 
         <button id="btn-menu-insumos" mat-button [matMenuTriggerFor]="menuInsumos">Insumos</button>
           <mat-menu #menuInsumos="matMenu">
             <button mat-menu-item (click)="navegarListagemInsumos()">Listar</button>
             <button mat-menu-item (click)="navegarCadastroInsumo()">Cadastrar</button>
+        </mat-menu>
+
+        <button id="btn-menu-cursos-disciplinas" mat-button [matMenuTriggerFor]="menuCursosDisciplina">Cursos</button>
+        <mat-menu #menuCursosDisciplina="matMenu">
+          <button mat-menu-item (click)="navegarListagemCursos()">Listar cursos</button>
+          <button mat-menu-item (click)="navegarCadastroCurso()">Cadastrar curso</button>
         </mat-menu>
 
         <button id="btn-menu-laboratorios" mat-button [matMenuTriggerFor]="menuLaboratorios">Laboratórios</button>
@@ -24,8 +37,12 @@
 
       </li>
 
-      <li class="nav-item" *ngIf="showProfessorBoard">
-
+      <li class="nav-item" *ngIf="showProfessorBoard || showAdminBoard">
+        <button id="btn-menu-aulas" mat-button [matMenuTriggerFor]="menuAulas">Aulas</button>
+          <mat-menu #menuAulas="matMenu">
+            <button mat-menu-item (click)="navegarListagemAulas()">Listar</button>
+            <button mat-menu-item (click)="navegarCadastroAula()">Cadastrar</button>
+        </mat-menu>
       </li>
     </ul>
 

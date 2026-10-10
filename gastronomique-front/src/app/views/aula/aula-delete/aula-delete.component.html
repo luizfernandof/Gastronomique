@@ -1,0 +1,72 @@
+<div id="form-exclusao-aula" class="form container text-center">
+  <h1><strong>Confirma a exclusão desta aula?</strong></h1>
+  <form>
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Descrição</mat-label>
+        <input matInput [value]="aula.descricao" [disabled]="true" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Pregão</mat-label>
+        <input matInput [value]="aula.pregao.nome" [disabled]="true" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Professor</mat-label>
+        <input matInput [value]="aula.usuario.fullName" [disabled]="true" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Disciplina</mat-label>
+        <input matInput [value]="aula.disciplina.nome" [disabled]="true" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Laboratório</mat-label>
+        <input matInput [value]="aula.laboratorio.nome" [disabled]="true" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Data de utilização</mat-label>
+        <input matInput [value]="aula.dataUtilizacao" [disabled]="true" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Valor da aula (R$)</mat-label>
+        <input matInput [value]="aula.valor" [disabled]="true" />
+      </mat-form-field>
+    </div>
+
+    <div class="row" id="botoes-de-acao">
+      <button
+        (click)="excluirAula()"
+        class="btn-salvar"
+        mat-raised-button
+        color="primary"
+      >
+        Excluir
+      </button>
+      <button
+        (click)="cancelar()"
+        class="btn-cancelar"
+        mat-raised-button
+        color="warn"
+      >
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>
