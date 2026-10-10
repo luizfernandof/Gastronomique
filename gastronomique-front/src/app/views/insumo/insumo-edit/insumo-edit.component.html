@@ -1,0 +1,76 @@
+<div id="form-edicao-insumo" class="form container text-center">
+  <h1><strong>Editando insumo </strong></h1>
+  <form>
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Denominação</mat-label>
+        <input
+        matInput [(ngModel)]="insumo.denominacao"
+        [formControl]="denominacao"
+        required
+        type="text"
+        name="denominacao"/>
+        <mat-error *ngIf="denominacao.invalid">
+          "O campo 'Denominação' é obrigatório o preenchimento!"
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Descrição</mat-label>
+        <textarea
+          matInput [(ngModel)]="insumo.descricao"
+          [formControl]="descricao"
+          name="descricao"></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Unidade de medida</mat-label>
+        <mat-select
+          [(ngModel)]="insumo.unidadeDeMedida"
+          [formControl]="unidadeDeMedida"
+          required
+          type="text"
+          name="unidadeDeMedida">
+          <mat-option value="UN">UN</mat-option>
+          <mat-option value="KG">KG</mat-option>
+          <mat-option value="GR">GR</mat-option>
+          <mat-option value="LT">LT</mat-option>
+        </mat-select>
+        <mat-error *ngIf="unidadeDeMedida.invalid">
+          "O campo 'Unidade de medida' é obrigatório o preenchimento!"
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Tipo do insumo</mat-label>
+        <mat-select
+          [(ngModel)]="insumo.tipoInsumo"
+          [formControl]="tipoInsumo"
+          required
+          type="text"
+          name="tipoInsumo">
+          <mat-option value="PREGAO">Pregão</mat-option>
+          <mat-option value="PRODUCAO">Produção</mat-option>
+        </mat-select>
+        <mat-error *ngIf="tipoInsumo.invalid">
+          "O campo 'Tipo do insumo' é obrigatório o preenchimento!"
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row" id="botoes-de-acao">
+      <button (click)="editarInsumo()" class="btn-salvar" mat-raised-button color="primary">
+        Salvar
+      </button>
+      <button (click)="cancelar()" class="btn-cancelar" mat-raised-button color="warn">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

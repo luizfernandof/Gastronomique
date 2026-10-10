@@ -1,0 +1,68 @@
+<div class="content">
+
+  <div class="title">
+      <h1>Listagem de insumos</h1>
+  </div>
+
+  <button (click)="novoInsumo()" mat-stroked-button color="primary" id="btn-novo-insumo">
+    <i class="bi bi-plus-lg"></i> Novo Insumo
+  </button>
+
+  <div class="mat-elevation-z8 content-table">
+      <table class="table" mat-table [dataSource]="insumos">
+          <!-- Position Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Id</th>
+            <td mat-cell *matCellDef="let row"> {{ row.id }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="denominacao">
+            <th mat-header-cell *matHeaderCellDef> Denominação </th>
+            <td mat-cell *matCellDef="let row"> {{ row.denominacao }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="unidadeDeMedida">
+            <th mat-header-cell *matHeaderCellDef> Unidade de medida </th>
+            <td mat-cell *matCellDef="let row"> {{ row.unidadeDeMedida }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="descricao">
+            <th mat-header-cell *matHeaderCellDef> Descrição </th>
+            <td mat-cell *matCellDef="let row"> {{ row.descricao }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="tipoInsumo">
+            <th mat-header-cell *matHeaderCellDef> Tipo </th>
+            <td mat-cell *matCellDef="let row"> {{ row.tipoInsumo }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef> Ações </th>
+            <td mat-cell *matCellDef="let row">
+              <button (click)="editarInsumo(row.id)" mat-stroked-button color="primary">
+                <i class="bi bi-pencil-square"></i>editar
+              </button>
+              <button (click)="excluirInsumo(row.id)" mat-stroked-button color="warn">
+                <i class="bi bi-trash3"></i>excluir
+              </button>
+            </td>
+          </ng-container>
+
+          <!-- <ng-container matColumnDef="acoes">
+            <th class="mat-reader" mat-header-cell *matHeaderCellDef> AÇÕES </th>
+            <td mat-cell *matCellDef="let row">
+              <a class="edit" routerLink="update/{{ row.id }}">
+                <i class="material-icons">edit</i>
+              </a>
+              <a class="delete" routerLink="delete/{{ row.id }}">
+                <i class="material-icons">delete</i>
+              </a>
+            </td>
+          </ng-container> -->
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+  </div>
+</div>

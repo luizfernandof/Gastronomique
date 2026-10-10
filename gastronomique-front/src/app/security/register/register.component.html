@@ -1,0 +1,81 @@
+<div class="col-md-12">
+  <div class="card card-container">
+    <form
+      *ngIf="!isSuccessful"
+      name="form"
+      (ngSubmit)="f.form.valid && onSubmit()"
+      #f="ngForm"
+      novalidate
+    >
+      <div class="form-group">
+        <label for="fullName"><strong>Nome Completo:</strong></label>
+        <input
+          type="text"
+          class="form-control"
+          name="fullName"
+          [(ngModel)]="form.fullName"
+          required
+          minlength="2"
+          maxlength="100"
+          #fullName="ngModel"
+          [ngClass]="{ 'is-invalid': f.submitted && fullName.errors }"
+        />
+        <div class="invalid-feedback" *ngIf="fullName.errors && f.submitted">
+          <div *ngIf="fullName.errors['required']">Informe seu nome completo</div>
+          <div *ngIf="fullName.errors['minlength']">
+            O nome completo contém pelo menos 2 caracteres
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email"><strong>E-mail:</strong></label>
+        <input
+          type="email"
+          class="form-control"
+          name="email"
+          [(ngModel)]="form.email"
+          required
+          email
+          #email="ngModel"
+          [ngClass]="{ 'is-invalid' : f.submitted && email.errors }"
+        />
+        <div class="invalid-feedback" *ngIf="email.errors && f.submitted">
+          <div *ngIf="email.errors['required']">Informe seu e-mail</div>
+          <div *ngIf="email.errors['email']">
+            Informe seu e-mail no padrão 'seuemail@seuprovedor.com'
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password"><strong>Senha:</strong></label>
+        <input
+          type="password"
+          class="form-control"
+          name="password"
+          [(ngModel)]="form.password"
+          required
+          minlength="6"
+          #password="ngModel"
+          [ngClass]="{ 'is-invalid': f.submitted && password.errors }"
+        />
+        <div class="invalid-feedback" *ngIf="password.errors && f.submitted">
+          <div *ngIf="password.errors['required']">Informe sua senha</div>
+          <div *ngIf="password.errors['minlength']">
+            A senha possui pelo menos 6 caracteres
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button class="btn-block" id="btn-cadastrar"><strong>Cadastrar-se</strong></button>
+      </div>
+
+      <div class="alert alert-warning" *ngIf="f.submitted && isSignUpFailed">
+        Erro:<br />{{ errorMessage }}
+      </div>
+    </form>
+
+    <div class="alert alert-success" *ngIf="isSuccessful">
+      Seu cadastro foi realizado com sucesso, solicite ao administrador que ative seu usuário!
+    </div>
+  </div>
+</div>

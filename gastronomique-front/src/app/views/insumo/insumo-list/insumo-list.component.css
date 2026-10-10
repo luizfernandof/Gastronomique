@@ -1,0 +1,24 @@
+.title h1 {
+  max-width: 100%;
+  font-size: 24px;
+  font-family: 'Poppins';
+  font-weight: bolder;
+  text-align: center;
+}
+
+.content {
+  max-width: 100%;
+  margin-top: 40px;
+}
+
+.table th, td{
+  text-align: center;
+}
+
+.table button {
+  margin-right: 4px;
+}
+
+#btn-novo-insumo {
+  margin-bottom: 5px;
+}

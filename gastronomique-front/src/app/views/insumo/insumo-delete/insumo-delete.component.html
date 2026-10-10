@@ -1,0 +1,57 @@
+<div id="form-exclusao-insumo" class="form container text-center">
+  <h1><strong>Confirma a exclusão deste insumo?</strong></h1>
+  <form>
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Denominação</mat-label>
+        <input
+          matInput [value]="insumo.denominacao"
+          [disabled]="true"
+        />
+      </mat-form-field>
+    </div>
+
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Descrição</mat-label>
+        <textarea
+          matInput [value]="insumo.descricao"
+          [disabled]="true"
+          >
+        </textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Unidade de medida</mat-label>
+        <mat-select [value]="insumo.unidadeDeMedida" [disabled]="true">
+          <mat-option value="UN">UN</mat-option>
+          <mat-option value="KG">KG</mat-option>
+          <mat-option value="GR">GR</mat-option>
+          <mat-option value="LT">LT</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Tipo do insumo</mat-label>
+        <mat-select [value]="insumo.tipoInsumo" [disabled]="true">
+          <mat-option value="PREGAO">Pregão</mat-option>
+          <mat-option value="PRODUCAO">Produção</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row" id="botoes-de-acao">
+      <button (click)="excluirInsumo()" class="btn-salvar" mat-raised-button color="primary">
+        Excluir
+      </button>
+      <button (click)="cancelar()" class="btn-cancelar" mat-raised-button color="warn">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>
