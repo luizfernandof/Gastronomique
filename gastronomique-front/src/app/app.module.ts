@@ -18,6 +18,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { httpInterceptorProviders } from './security/_helpers/http.interceptor';
 import { BoardAdminComponent } from './security/board-admin/board-admin.component';
+import { BoardProfessorComponent } from './security/board-professor/board-professor.component';
 import { HomeComponent } from './security/home/home.component';
 import { LoginComponent } from './security/login/login.component';
 import { ProfileComponent } from './security/profile/profile.component';
@@ -39,6 +40,7 @@ import { LaboratorioListComponent } from './views/laboratorio/laboratorio-list/l
     HomeComponent,
     ProfileComponent,
     BoardAdminComponent,
+    BoardProfessorComponent,
     InsumoCreateComponent,
     InsumoEditComponent,
     InsumoListComponent,

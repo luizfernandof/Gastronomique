@@ -20,7 +20,7 @@ import com.ifpr.gastronomique.security.repositories.RoleRepository;
 import com.ifpr.gastronomique.security.repositories.UserRepository;
 import com.ifpr.gastronomique.security.services.UserService;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials="true")
+@CrossOrigin(origins = "${app.frontend-url}", maxAge = 3600, allowCredentials="true")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

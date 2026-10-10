@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ifpr.gastronomique.api.models.Insumo;
 import com.ifpr.gastronomique.api.services.InsumoService;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials="true")
+@CrossOrigin(origins = "${app.frontend-url}", maxAge = 3600, allowCredentials="true")
 @RestController
 @RequestMapping("/insumos")
 public class InsumoController {
@@ -38,16 +39,19 @@ public class InsumoController {
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Insumo> inserirInsumo(@Valid @RequestBody Insumo insumo) {
 		return service.inserirInsumo(insumo);
 	}
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Insumo> alterarInsumo(@PathVariable Long id, @Valid @RequestBody Insumo insumo) {
 		return service.alterarInsumo(id, insumo);
 	}
 	
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Insumo> excluirInsumoPorId(@PathVariable Long id) {
 		return service.excluirInsumoPorId(id);
 	}

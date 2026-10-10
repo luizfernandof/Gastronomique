@@ -37,6 +37,10 @@ const routes: Routes = [
     component: BoardAdminComponent
   },
   {
+    path: 'professor',
+    component: BoardProfessorComponent
+  },
+  {
     path: 'insumo/inserir',
     component: InsumoCreateComponent
   },

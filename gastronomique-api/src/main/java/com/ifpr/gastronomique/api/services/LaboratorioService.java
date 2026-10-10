@@ -35,9 +35,10 @@ public class LaboratorioService {
 	}
 	
 	public ResponseEntity<Laboratorio> alterarLaboratorio(Long id, Laboratorio laboratorioAlterado) {
-		Laboratorio laboratorio = repository.findById(laboratorioAlterado.getId()).orElse(null);
+		Laboratorio laboratorio = repository.findById(id).orElse(null);
 		if(laboratorio != null) {
-			repository.save(laboratorioAlterado);
+			laboratorio.setNome(laboratorioAlterado.getNome());
+			repository.save(laboratorio);
 			return new ResponseEntity<Laboratorio>(laboratorio, HttpStatus.OK);
 		}
 		

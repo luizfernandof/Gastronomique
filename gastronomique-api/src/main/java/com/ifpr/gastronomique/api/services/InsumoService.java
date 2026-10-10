@@ -35,9 +35,13 @@ public class InsumoService {
 	}
 	
 	public ResponseEntity<Insumo> alterarInsumo(Long id, Insumo insumoAlterado) {
-		Insumo insumo = repository.findById(insumoAlterado.getId()).orElse(null);
+		Insumo insumo = repository.findById(id).orElse(null);
 		if(insumo != null) {
-			repository.save(insumoAlterado);
+			insumo.setDenominacao(insumoAlterado.getDenominacao());
+			insumo.setUnidadeDeMedida(insumoAlterado.getUnidadeDeMedida());
+			insumo.setDescricao(insumoAlterado.getDescricao());
+			insumo.setTipoInsumo(insumoAlterado.getTipoInsumo());
+			repository.save(insumo);
 			return new ResponseEntity<Insumo>(insumo, HttpStatus.OK);
 		}
 		

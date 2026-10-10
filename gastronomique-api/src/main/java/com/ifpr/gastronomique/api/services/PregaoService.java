@@ -35,9 +35,13 @@ public class PregaoService {
 	}
 	
 	public ResponseEntity<Pregao> alterarPregao(Long id, Pregao pregaoAlterado) {
-		Pregao pregao = repository.findById(pregaoAlterado.getId()).orElse(null);
+		Pregao pregao = repository.findById(id).orElse(null);
 		if(pregao != null) {
-			repository.save(pregaoAlterado);
+			pregao.setDataInicio(pregaoAlterado.getDataInicio());
+			pregao.setDataFinal(pregaoAlterado.getDataFinal());
+			pregao.setNome(pregaoAlterado.getNome());
+			pregao.setPregaoInsumo(pregaoAlterado.getPregaoInsumo());
+			repository.save(pregao);
 			return new ResponseEntity<Pregao>(pregao, HttpStatus.OK);
 		}
 		

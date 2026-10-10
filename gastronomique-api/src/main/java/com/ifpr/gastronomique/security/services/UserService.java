@@ -74,9 +74,6 @@ public class UserService {
 	@SuppressWarnings("null")
 	@Transactional
 	public ResponseEntity<?> CadastrarNovoUsuario(SignupRequest signUpRequest) {
-		if (repository.existsByUsername(signUpRequest.getUsername())) {
-			return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
-		}
 		if (repository.existsByEmail(signUpRequest.getEmail())) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
 		}
@@ -95,29 +92,10 @@ public class UserService {
 		// Usuário começa desativado até o ACEITE do ADMINISTRADOR: 0 = INATIVO, 1 = ATIVO
 		user.setActive(false);
 
-		Set<String> strRoles = signUpRequest.getRole();
 		Set<Role> roles = new HashSet<>();
-		
-		if(strRoles == null) {
-			Role userRole = roleRepository.findByName(ERole.ROLE_PROFESSOR)
-					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-			roles.add(userRole);
-		} else {
-			for(String role : strRoles) {
-				switch (role) {
-				case "admin":
-					Role roleAdmin = roleRepository.findByName(ERole.ROLE_ADMIN)
-					.orElseThrow(() -> new RuntimeException("Role is not found!"));
-					roles.add(roleAdmin);
-					break;
-				case "professor":
-					Role roleProfessor = roleRepository.findByName(ERole.ROLE_PROFESSOR)
-					.orElseThrow(() -> new RuntimeException("Role is not found!"));
-					roles.add(roleProfessor);
-					break;
-				}
-			}
-		}
+		Role userRole = roleRepository.findByName(ERole.ROLE_PROFESSOR)
+				.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+		roles.add(userRole);
 		
 		user.setRoles(roles);
 		repository.save(user);

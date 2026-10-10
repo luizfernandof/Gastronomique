@@ -35,9 +35,10 @@ public class CursoService {
 	}
 	
 	public ResponseEntity<Curso> alterarCurso(Long id, Curso cursoAlterado) {
-		Curso curso = repository.findById(cursoAlterado.getId()).orElse(null);
+		Curso curso = repository.findById(id).orElse(null);
 		if(curso != null) {
-			repository.save(cursoAlterado);
+			curso.setNome(cursoAlterado.getNome());
+			repository.save(curso);
 			return new ResponseEntity<Curso>(curso, HttpStatus.OK);
 		}
 		

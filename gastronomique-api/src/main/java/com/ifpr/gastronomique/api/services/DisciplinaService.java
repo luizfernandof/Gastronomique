@@ -51,9 +51,10 @@ public class DisciplinaService {
 	}
 	
 	public ResponseEntity<Disciplina> alterarDisciplina(Long id, Disciplina disciplinaAlterada) {
-		Disciplina disciplina = repository.findById(disciplinaAlterada.getId()).orElse(null);
+		Disciplina disciplina = repository.findById(id).orElse(null);
 		if(disciplina != null) {
-			repository.save(disciplinaAlterada);
+			disciplina.setNome(disciplinaAlterada.getNome());
+			repository.save(disciplina);
 			return new ResponseEntity<Disciplina>(disciplina, HttpStatus.OK);
 		}
 		

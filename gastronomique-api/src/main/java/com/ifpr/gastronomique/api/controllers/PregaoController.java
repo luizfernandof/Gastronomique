@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ifpr.gastronomique.api.models.Pregao;
 import com.ifpr.gastronomique.api.services.PregaoService;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials="true")
+@CrossOrigin(origins = "${app.frontend-url}", maxAge = 3600, allowCredentials="true")
 @RestController
 @RequestMapping("/pregoes")
 public class PregaoController {
@@ -36,16 +37,19 @@ public class PregaoController {
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Pregao> inserirPregao(@RequestBody Pregao pregao) {
 		return service.inserirPregao(pregao);
 	}
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Pregao> alterarPregao(@PathVariable Long id,@RequestBody Pregao pregao) {
 		return service.alterarPregao(id, pregao);
 	}
 	
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Pregao> excluirPregaoPorId(@PathVariable Long id) {
 		return service.excluirPregaoPorId(id);
 	}
